@@ -1,38 +1,67 @@
 class Ship {
   constructor(length) {
-    this.length = length;
-    this.hitTracker = [].fill(false, length);
+    this.shipLength = length;
+    this.hitTracker = [];
     this.isSunk = false;
   }
-  hit(pos) {
-    if (this.hitTracker[pos] !== undefined) this.hitTracker[pos] = true;
-    if (this.checkIfSunk()) this.isSunk = true;
+  hit() {
+    if (this.hitTracker.length < this.shipLength) this.hitTracker.push(true);
+    this.checkIfSunk();
   }
   checkIfSunk() {
-    return this.hitTracker.every(true);
+    this.isSunk = this.hitTracker.every(true) && this.hitTracker.length === this.shipLength;
   }
 }
-// board is 2 arrays, inside each spot is either 0 for nothing, 1 for empty hit, or a reference to a ship object
-// board = [[pos,pos,pos], [pos,pos,pos], [ship1,ship1,ship1]]
-// to hit, board[2][0].hit()
-// [{},]
 
 class GameBoard {
-  constructor(player1, player2) {
+  constructor() {
     this.attackCount = 0;
-    this.board = [].fill([].fill({ shipOrWater: 0, isHit: false }, 10), 10);
+    this.playingBoard = GameBoard.setBoard();
     this.shipList = [];
-    this.playerList = [player1, player2];
+  }
+
+  static setBoard() {
+    let horizontal = [];
+    for (let i = 0; i < 10; i++) {
+      let vertical = [];
+      for (let j = 0; j < 10; j++) {
+        vertical[j] = false;
+      }
+      horizontal[i] = vertical;
+    }
+    return horizontal;
   }
 
   addShip(length, pos, orientation) {
     let newShip = new Ship(length);
     let shipEntry = { shipObject: newShip, position: pos, isVertical: orientation };
     this.shipList.push(shipEntry);
+    this.setShips();
+  }
+
+  setShips() {
+    this.shipList.forEach((ship) => {
+      let horizontalCoord = ship.position[0];
+      let verticalCoord = ship.position[1];
+      for (let i = 0; i < ship.shipObject.shipLength; i++) {
+        this.playingBoard[horizontalCoord][verticalCoord] = {
+          ship: ship.shipObject,
+          hitMarker: false,
+        };
+        ship.isVertical ? verticalCoord++ : horizontalCoord++;
+      }
+    });
   }
 
   dropShell(positionY, positionX) {
-    const hitLocation = this.board[positionX][positionY].shipOrWater;
+    const hitLocation = this.playingBoard[positionX][positionY].spotContent;
   }
+  // each player gets a board
   // if certain number of ships, start game
+  // TODO hit counter checks if the spot has been attacked, if not, marks the attack and checks if it hit a ship
+  // if it hits a ship, set a counter on that object
 }
+
+const board = new GameBoard();
+board.addShip(3, [3, 3], true);
+console.log(board.playingBoard);
