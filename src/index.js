@@ -1,17 +1,4 @@
-class Ship {
-  constructor(length) {
-    this.shipLength = length;
-    this.hitTracker = [];
-    this.isSunk = false;
-  }
-  hit() {
-    if (this.hitTracker.length < this.shipLength) this.hitTracker.push(true);
-    this.checkIfSunk();
-  }
-  checkIfSunk() {
-    this.isSunk = this.hitTracker.every(true) && this.hitTracker.length === this.shipLength;
-  }
-}
+import { Ship } from "./Ship";
 
 class GameBoard {
   constructor() {
@@ -19,7 +6,6 @@ class GameBoard {
     this.playingBoard = GameBoard.setBoard();
     this.shipList = [];
   }
-
   static setBoard() {
     let horizontal = [];
     for (let i = 0; i < 10; i++) {
@@ -31,15 +17,17 @@ class GameBoard {
     }
     return horizontal;
   }
-
-  addShip(length, pos, orientation) {
+  addShipToList(length, pos, orientation) {
     let newShip = new Ship(length);
     let shipEntry = { shipObject: newShip, position: pos, isVertical: orientation };
+    if (this.playingBoard[pos[0]][pos[1]] !== false) {
+      // a ship is already there warning
+      return;
+    }
     this.shipList.push(shipEntry);
-    this.setShips();
+    this.setShipsOnBoard();
   }
-
-  setShips() {
+  setShipsOnBoard() {
     this.shipList.forEach((ship) => {
       let horizontalCoord = ship.position[0];
       let verticalCoord = ship.position[1];
@@ -52,16 +40,36 @@ class GameBoard {
       }
     });
   }
-
-  dropShell(positionY, positionX) {
-    const hitLocation = this.playingBoard[positionX][positionY].spotContent;
+  dropShell(x, y) {
+    //move to game logic
+    let hitLocation = this.playingBoard[x][y];
+    if (hitLocation === true) return;
+    if (hitLocation.ship !== undefined && hitLocation.ship.isSunk === false) {
+      hitLocation.ship.hit();
+      hitLocation.hitMarker = true;
+    } else {
+      hitLocation = true;
+    }
   }
   // each player gets a board
   // if certain number of ships, start game
   // TODO hit counter checks if the spot has been attacked, if not, marks the attack and checks if it hit a ship
   // if it hits a ship, set a counter on that object
+  // TODO something that controls game flow, sets ships, makes boards, sets them on players players and swaps turns
+}
+
+class Player {
+  constructor(name) {
+    this.name = name; //get from DOM
+    this.board = new GameBoard();
+  }
+  placeShips() {
+    Ship.types.forEach((x) => {
+      // ask where to place ship.name and use length
+      // take pos from dom
+      // run board.addshiptolist
+    });
+  }
 }
 
 const board = new GameBoard();
-board.addShip(3, [3, 3], true);
-console.log(board.playingBoard);
