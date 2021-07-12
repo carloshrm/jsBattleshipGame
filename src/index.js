@@ -63,6 +63,7 @@ class Player {
     this.name = name; //get from DOM
     this.board = new GameBoard();
   }
+  // if computer, needs AI
   placeShips() {
     Ship.types.forEach((x) => {
       // ask where to place ship.name and use length
@@ -72,4 +73,22 @@ class Player {
   }
 }
 
+class DomManager {
+  static drawBoard(board) {
+    let boardDiv = document.getElementById("player_one_board");
+    board.forEach((row, rI) => {
+      let tableRow = document.createElement("tr");
+      tableRow.dataset.horizontalPos = rI;
+      row.forEach((col, cI) => {
+        let tableCol = document.createElement("td");
+        tableCol.dataset.verticalPos = cI;
+        tableCol.classList.add(`${col ? "has_ship" : "not_hit"}`);
+        tableRow.appendChild(tableCol);
+      });
+      boardDiv.appendChild(tableRow);
+    });
+  }
+}
 const board = new GameBoard();
+board.addShipToList(3, [3, 3], false);
+DomManager.drawBoard(board.playingBoard);
