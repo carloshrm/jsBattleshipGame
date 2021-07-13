@@ -8,9 +8,22 @@ tr,
 td {
   padding: 1rem;
 }
+th {
+}
 .has_ship {
   background-color: brown;
 }
 .not_hit {
   background-color: aqua;
+}
+
+#main_container {
+  display: flex;
+}
+
+#player_one_ships {
+  border: 1px solid black;
+}
+#player_one_ships td {
+  background-color: bisque;
 }

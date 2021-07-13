@@ -1,94 +1,12 @@
-import { Ship } from "./Ship";
+import { makeShipList, drawBoard } from "./domManager";
+import { Player } from "./player";
 
-class GameBoard {
-  constructor() {
-    this.attackCount = 0;
-    this.playingBoard = GameBoard.setBoard();
-    this.shipList = [];
-  }
-  static setBoard() {
-    let horizontal = [];
-    for (let i = 0; i < 10; i++) {
-      let vertical = [];
-      for (let j = 0; j < 10; j++) {
-        vertical[j] = false;
-      }
-      horizontal[i] = vertical;
-    }
-    return horizontal;
-  }
-  addShipToList(length, pos, orientation) {
-    let newShip = new Ship(length);
-    let shipEntry = { shipObject: newShip, position: pos, isVertical: orientation };
-    if (this.playingBoard[pos[0]][pos[1]] !== false) {
-      // a ship is already there warning
-      return;
-    }
-    this.shipList.push(shipEntry);
-    this.setShipsOnBoard();
-  }
-  setShipsOnBoard() {
-    this.shipList.forEach((ship) => {
-      let horizontalCoord = ship.position[0];
-      let verticalCoord = ship.position[1];
-      for (let i = 0; i < ship.shipObject.shipLength; i++) {
-        this.playingBoard[horizontalCoord][verticalCoord] = {
-          ship: ship.shipObject,
-          hitMarker: false,
-        };
-        ship.isVertical ? verticalCoord++ : horizontalCoord++;
-      }
-    });
-  }
-  dropShell(x, y) {
-    //move to game logic
-    let hitLocation = this.playingBoard[x][y];
-    if (hitLocation === true) return;
-    if (hitLocation.ship !== undefined && hitLocation.ship.isSunk === false) {
-      hitLocation.ship.hit();
-      hitLocation.hitMarker = true;
-    } else {
-      hitLocation = true;
-    }
-  }
-  // each player gets a board
-  // if certain number of ships, start game
-  // TODO hit counter checks if the spot has been attacked, if not, marks the attack and checks if it hit a ship
-  // if it hits a ship, set a counter on that object
-  // TODO something that controls game flow, sets ships, makes boards, sets them on players players and swaps turns
-}
+const playerOne = new Player("Anon");
+drawBoard(playerOne.board.playingBoard);
+makeShipList(playerOne.shipList);
 
-class Player {
-  constructor(name) {
-    this.name = name; //get from DOM
-    this.board = new GameBoard();
-  }
-  // if computer, needs AI
-  placeShips() {
-    Ship.types.forEach((x) => {
-      // ask where to place ship.name and use length
-      // take pos from dom
-      // run board.addshiptolist
-    });
-  }
-}
+export { playerOne };
 
-class DomManager {
-  static drawBoard(board) {
-    let boardDiv = document.getElementById("player_one_board");
-    board.forEach((row, rI) => {
-      let tableRow = document.createElement("tr");
-      tableRow.dataset.horizontalPos = rI;
-      row.forEach((col, cI) => {
-        let tableCol = document.createElement("td");
-        tableCol.dataset.verticalPos = cI;
-        tableCol.classList.add(`${col ? "has_ship" : "not_hit"}`);
-        tableRow.appendChild(tableCol);
-      });
-      boardDiv.appendChild(tableRow);
-    });
-  }
-}
-const board = new GameBoard();
-board.addShipToList(3, [3, 3], false);
-DomManager.drawBoard(board.playingBoard);
+// another board for pc
+// place ships in random places
+// different display
