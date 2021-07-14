@@ -1,5 +1,6 @@
 class Ship {
-  constructor(shipLength) {
+  constructor(name, shipLength) {
+    this.name = name;
     this.shipLength = shipLength;
     this.hitTracker = [];
     this.isSunk = false;
@@ -11,12 +12,12 @@ class Ship {
   checkIfSunk() {
     this.isSunk = this.hitTracker.length === this.shipLength && this.hitTracker.every(true);
   }
-  static types = [
-    { name: "Carrier", length: 5 },
-    { name: "Battleship", length: 4 },
-    { name: "Cruiser", length: 3 },
-    { name: "Submarine", length: 3 },
-    { name: "Destroyer", length: 2 },
+  static setTypes = [
+    new Ship("Carrier", 5),
+    new Ship("Battleship", 4),
+    new Ship("Cruiser", 3),
+    new Ship("Submarine", 3),
+    new Ship("Destroyer", 2),
   ];
 }
 

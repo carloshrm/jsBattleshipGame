@@ -1,3 +1,4 @@
+import { drawBoard } from "./domManager";
 import { Ship } from "./ship";
 
 class GameBoard {
@@ -17,29 +18,35 @@ class GameBoard {
     }
     return horizontal;
   }
-  addShipToList(length, pos, orientation) {
-    let newShip = new Ship(length);
-    let shipEntry = { shipObject: newShip, position: pos, isVertical: orientation };
-    if (this.playingBoard[pos[0]][pos[1]] !== false) {
-      // a ship is already there warning
-      return;
+  addShipToList(shipObject, length, pos, orientation) {
+    let shipEntry = { shipObject: shipObject, position: pos, isVertical: orientation };
+    let v = pos[0];
+    let h = pos[1];
+    for (let i = 0; i < length; i++) {
+      if (this.playingBoard[v][h] !== false) {
+        alert("has ship already");
+        return;
+      }
+      orientation ? v++ : h++;
     }
     this.placedShips.push(shipEntry);
     this.setShipsOnBoard();
   }
   setShipsOnBoard() {
     this.placedShips.forEach((ship) => {
-      let horizontalCoord = ship.position[0];
-      let verticalCoord = ship.position[1];
+      let vertCoord = ship.position[0];
+      let horCoord = ship.position[1];
       for (let i = 0; i < ship.shipObject.shipLength; i++) {
-        this.playingBoard[horizontalCoord][verticalCoord] = {
+        this.playingBoard[vertCoord][horCoord] = {
           ship: ship.shipObject,
           hitMarker: false,
         };
-        ship.isVertical ? verticalCoord++ : horizontalCoord++;
+        ship.isVertical ? vertCoord++ : horCoord++;
       }
     });
+    drawBoard(this.playingBoard);
   }
+
   dropShell(x, y) {
     //move to game logic
     let hitLocation = this.playingBoard[x][y];

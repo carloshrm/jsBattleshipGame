@@ -3,6 +3,7 @@ import { GameBoard } from "./gameBoard";
 
 function drawBoard(board, player = true) {
   let boardDiv = document.getElementById("player_one_board");
+  boardDiv.innerHTML = "";
   let headerRow = document.createElement("tr");
   board.forEach((row, rI) => {
     let tableRow = document.createElement("tr");
@@ -18,24 +19,26 @@ function drawBoard(board, player = true) {
   });
 }
 
-function makeShipList(types) {
-  let shipList = document.getElementById("player_one_ships");
+function makeShipList(list) {
+  let listDom = document.getElementById("player_one_ships");
   let table = document.createElement("table");
-
-  types.forEach((ship) => {
+  listDom.innerHTML = "";
+  list.forEach((ship) => {
+    if (playerOne.board.placedShips.find((s) => s.shipObject.name == ship.name)) return;
     let draggableShip = document.createElement("tr");
     let shipName = document.createElement("th");
     draggableShip.draggable = true;
     draggableShip.className = "ship_piece";
-    for (let i = 0; i < ship.length; i++) {
+    for (let i = 0; i < ship.shipLength; i++) {
       draggableShip.appendChild(document.createElement("td"));
     }
     shipName.innerText = `${ship.name}`;
     shipName.colSpan = "5";
-    draggableShip.dataset.length = ship.length;
+    draggableShip.dataset.length = ship.shipLength;
+    draggableShip.dataset.name = ship.name;
     table.appendChild(shipName);
     table.appendChild(draggableShip);
-    shipList.appendChild(table);
+    listDom.appendChild(table);
   });
   setDragDropListeners();
 }
@@ -52,13 +55,17 @@ function setDragDropListeners() {
 
 function dragStartHandler(e) {
   e.dataTransfer.setData("length", e.target.dataset.length);
+  e.dataTransfer.setData("name", e.target.dataset.name);
 }
 function dropHandler(e) {
   e.preventDefault();
-  let shipLength = e.dataTransfer.getData("length");
-  let position = [e.target.parentElement.dataset.horizontalPos, e.target.dataset.verticalPos];
-  playerOne.board.addShipToList(shipLength, position, false);
-  console.log(playerOne.shipList);
+  let droppedLength = e.dataTransfer.getData("length");
+  let droppedName = e.dataTransfer.getData("name");
+  const shipObject = playerOne.shipList.find((sh) => sh.name == droppedName);
+  let position = [+e.target.parentElement.dataset.horizontalPos, +e.target.dataset.verticalPos];
+  playerOne.board.addShipToList(shipObject, droppedLength, position, false);
+  makeShipList(playerOne.shipList);
+  console.log(playerOne.board.placedShips);
 }
 
 export { drawBoard, makeShipList };
