@@ -8,7 +8,7 @@
     <title>BattleShip</title>
   </head>
   <body>
-    <header><p>Battleship Header</p></header>
+    <header><p>Battleship</p></header>
     <div class="controls_container">
       <form action="">
         <input type="text" name="player_name_form" id="player_name_form" placeholder="Name" />
@@ -17,7 +17,14 @@
       <button>reset</button>
     </div>
     <div id="main_container">
-      <div id="player_one_ships"></div>
+      <div id="player_one_ships_div">
+        <div>
+          <p>Fleet</p>
+          <label for="vertical_toggle">Vertical</label>
+          <input type="checkbox" name="vertical_toggle" id="vertical_toggle" />
+        </div>
+        <div id="player_one_ships"></div>
+      </div>
       <div id="player_one"><table id="player_one_board"></table></div>
     </div>
     <footer><p>Footer</p></footer>
