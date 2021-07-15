@@ -10,18 +10,21 @@ td {
 }
 th {
 }
+.water_tile {
+  background-color: aqua;
+}
 .has_ship {
   background-color: brown;
-}
-.not_hit {
-  background-color: aqua;
 }
 
 #main_container {
   display: flex;
 }
 
-#player_one_ships {
+#player_one_ships_div {
+  display: grid;
+  justify-items: center;
+  padding: 0.5rem;
   border: 1px solid black;
 }
 #player_one_ships td {

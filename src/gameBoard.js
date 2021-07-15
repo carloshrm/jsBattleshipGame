@@ -20,14 +20,9 @@ class GameBoard {
   }
   addShipToList(shipObject, length, pos, orientation) {
     let shipEntry = { shipObject: shipObject, position: pos, isVertical: orientation };
-    let v = pos[0];
-    let h = pos[1];
-    for (let i = 0; i < length; i++) {
-      if (this.playingBoard[v][h] !== false) {
-        alert("has ship already");
-        return;
-      }
-      orientation ? v++ : h++;
+    if (this.verifySurroundings(pos, length, orientation) == false) {
+      alert("has ship already");
+      return;
     }
     this.placedShips.push(shipEntry);
     this.setShipsOnBoard();
@@ -45,6 +40,17 @@ class GameBoard {
       }
     });
     drawBoard(this.playingBoard);
+  }
+  verifySurroundings(pos, length, ori) {
+    let vertPos = pos[0];
+    let horPos = pos[1];
+    for (let i = 0; i < length; i++) {
+      if (this.playingBoard[vertPos][horPos] !== false) {
+        return false;
+      }
+      ori ? vertPos++ : horPos++;
+    }
+    return true;
   }
 
   dropShell(x, y) {
