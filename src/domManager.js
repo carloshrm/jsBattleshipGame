@@ -12,7 +12,11 @@ function drawBoard(board, player = true) {
       let tableCol = document.createElement("td");
       tableCol.dataset.verticalPos = cI;
       tableCol.classList.add("water_tile");
-      if (player && col) tableCol.classList.add("has_ship");
+      if (player && col) {
+        tableCol.classList.add("ship_piece");
+        tableCol.draggable = true;
+        tableCol.dataset.name = col.ship.name;
+      }
       tableRow.appendChild(tableCol);
     });
     if (rI === 0) boardDiv.appendChild(headerRow);
@@ -20,11 +24,11 @@ function drawBoard(board, player = true) {
   });
 }
 
-function makeShipList(list) {
+function makeShipList() {
   let listDom = document.getElementById("player_one_ships");
   let table = document.createElement("table");
   listDom.innerHTML = "";
-  list.forEach((ship) => {
+  playerOne.shipList.forEach((ship) => {
     if (playerOne.board.placedShips.find((s) => s.shipObject.name == ship.name)) return;
     let draggableShip = document.createElement("tr");
     let shipName = document.createElement("th");
@@ -47,24 +51,45 @@ function setDragDropListeners() {
   document.querySelectorAll(".ship_piece").forEach((sp) => {
     sp.addEventListener("dragstart", dragStartHandler, false);
   });
-  player_one_board.addEventListener("drop", dropHandler, false);
   player_one_board.addEventListener("dragover", preventDef, false);
+  player_one_ships_div.addEventListener("dragover", preventDef, false);
+  player_one_board.addEventListener("drop", dropHandler, false);
+  player_one_ships_div.addEventListener("drop", dropHandler, false);
 }
+
 function preventDef(e) {
   e.preventDefault();
 }
 
 function dragStartHandler(e) {
   e.dataTransfer.setData("name", e.target.dataset.name);
+  e.dataTransfer.setData("origin", e.target.classList);
 }
+
 function dropHandler(e) {
   e.preventDefault();
+  let originSwitch = e.dataTransfer.getData("origin").includes("water_tile");
   let droppedName = e.dataTransfer.getData("name");
   const shipObject = playerOne.shipList.find((sh) => sh.name == droppedName);
-  let droppedLength = shipObject.shipLength;
-  let position = [+e.target.parentElement.dataset.horizontalPos, +e.target.dataset.verticalPos];
-  playerOne.board.addShipToList(shipObject, droppedLength, position, vertical_toggle.checked);
+  if (e.target.classList.contains("water_tile") && !originSwitch) dropOnBoard();
+  if (e.target.classList.contains("ship_list") && originSwitch) dropOnList();
   makeShipList(playerOne.shipList);
+  //
+  function dropOnBoard() {
+    let targetPosition = [
+      +e.target.parentElement.dataset.horizontalPos,
+      +e.target.dataset.verticalPos,
+    ];
+    playerOne.board.addShipToList(shipObject, targetPosition, vertical_toggle.checked);
+  }
+  function dropOnList() {
+    let pickedObject = playerOne.board.placedShips.find((x) => x.shipObject.name == droppedName);
+    playerOne.board.placedShips.splice(playerOne.board.placedShips.indexOf(pickedObject, 1));
+    playerOne.board.iterateShipLength(pickedObject, true);
+    playerOne.board.refreshBoard();
+  }
 }
 
 export { drawBoard, makeShipList };
+
+// TODO - REMOVE SHIP FROM BOARD AFTER DROPPING ON LIST

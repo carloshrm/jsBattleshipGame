@@ -13,7 +13,8 @@ th {
 .water_tile {
   background-color: aqua;
 }
-.has_ship {
+
+#player_one_board .ship_piece {
   background-color: brown;
 }
 

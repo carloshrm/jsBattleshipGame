@@ -4,10 +4,11 @@ import { Ship } from "./ship";
 class GameBoard {
   constructor() {
     this.attackCount = 0;
-    this.playingBoard = GameBoard.setBoard();
+    this.playingBoard = GameBoard.setBlankBoard();
     this.placedShips = [];
   }
-  static setBoard() {
+
+  static setBlankBoard() {
     let horizontal = [];
     for (let i = 0; i < 10; i++) {
       let vertical = [];
@@ -18,16 +19,18 @@ class GameBoard {
     }
     return horizontal;
   }
-  addShipToList(shipObject, length, pos, orientation) {
+
+  addShipToList(shipObject, pos, orientation) {
     let shipEntry = { shipObject: shipObject, position: pos, isVertical: orientation };
-    if (this.verifySurroundings(pos, length, orientation) == false) {
+    if (this.iterateShipLength(shipEntry) == false) {
       alert("has ship already");
       return;
     }
     this.placedShips.push(shipEntry);
-    this.setShipsOnBoard();
+    this.refreshBoard();
   }
-  setShipsOnBoard() {
+
+  refreshBoard() {
     this.placedShips.forEach((ship) => {
       let vertCoord = ship.position[0];
       let horCoord = ship.position[1];
@@ -41,14 +44,17 @@ class GameBoard {
     });
     drawBoard(this.playingBoard);
   }
-  verifySurroundings(pos, length, ori) {
-    let vertPos = pos[0];
-    let horPos = pos[1];
-    for (let i = 0; i < length; i++) {
-      if (this.playingBoard[vertPos][horPos] !== false) {
+
+  iterateShipLength(targetShip, switchRemove = false) {
+    debugger;
+    let vertPos = targetShip.position[0];
+    let horPos = targetShip.position[1];
+    for (let i = 0; i < targetShip.shipObject.shipLength; i++) {
+      if (this.playingBoard[vertPos][horPos] !== false && !switchRemove) {
         return false;
       }
-      ori ? vertPos++ : horPos++;
+      if (switchRemove) this.playingBoard[vertPos][horPos] = false;
+      targetShip.orientation ? vertPos++ : horPos++;
     }
     return true;
   }
