@@ -24,7 +24,7 @@ function drawBoard(board, player = true) {
   });
 }
 
-function makeShipList() {
+function fleetList() {
   let listDom = document.getElementById("player_one_ships");
   let table = document.createElement("table");
   listDom.innerHTML = "";
@@ -71,9 +71,12 @@ function dropHandler(e) {
   let originSwitch = e.dataTransfer.getData("origin").includes("water_tile");
   let droppedName = e.dataTransfer.getData("name");
   const shipObject = playerOne.shipList.find((sh) => sh.name == droppedName);
-  if (e.target.classList.contains("water_tile") && !originSwitch) dropOnBoard();
+  if (e.target.classList.contains("water_tile")) {
+    if (originSwitch) dropOnList();
+    dropOnBoard();
+  }
   if (e.target.classList.contains("ship_list") && originSwitch) dropOnList();
-  makeShipList(playerOne.shipList);
+  fleetList(playerOne.shipList);
   //
   function dropOnBoard() {
     let targetPosition = [
@@ -84,12 +87,14 @@ function dropHandler(e) {
   }
   function dropOnList() {
     let pickedObject = playerOne.board.placedShips.find((x) => x.shipObject.name == droppedName);
-    playerOne.board.placedShips.splice(playerOne.board.placedShips.indexOf(pickedObject, 1));
+    console.log(pickedObject);
+    playerOne.board.placedShips.splice(playerOne.board.placedShips.indexOf(pickedObject), 1);
     playerOne.board.iterateShipLength(pickedObject, true);
     playerOne.board.refreshBoard();
   }
 }
 
-export { drawBoard, makeShipList };
+export { drawBoard, fleetList };
 
-// TODO - REMOVE SHIP FROM BOARD AFTER DROPPING ON LIST
+// TODO - SETUP NEW BOARD FOR COMPUTER, MAKE RANDOM SHIP PLACEMENT -> START BUTTON
+// start button should cut drag/drop listeners

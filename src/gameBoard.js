@@ -24,7 +24,7 @@ class GameBoard {
     let shipEntry = { shipObject: shipObject, position: pos, isVertical: orientation };
     if (this.iterateShipLength(shipEntry) == false) {
       alert("has ship already");
-      return;
+      return false;
     }
     this.placedShips.push(shipEntry);
     this.refreshBoard();
@@ -46,7 +46,6 @@ class GameBoard {
   }
 
   iterateShipLength(targetShip, switchRemove = false) {
-    debugger;
     let vertPos = targetShip.position[0];
     let horPos = targetShip.position[1];
     for (let i = 0; i < targetShip.shipObject.shipLength; i++) {
@@ -54,7 +53,7 @@ class GameBoard {
         return false;
       }
       if (switchRemove) this.playingBoard[vertPos][horPos] = false;
-      targetShip.orientation ? vertPos++ : horPos++;
+      targetShip.isVertical ? vertPos++ : horPos++;
     }
     return true;
   }

@@ -1,9 +1,11 @@
-import { makeShipList, drawBoard } from "./domManager";
+import { fleetList, drawBoard } from "./domManager";
 import { Player } from "./player";
 
 const playerOne = new Player("Anon");
 drawBoard(playerOne.board.playingBoard);
-makeShipList(playerOne.shipList);
+fleetList(playerOne.shipList);
+const playerTwo = new Player("Anon");
+drawBoard(playerTwo.board.playingBoard, false);
 
 export { playerOne };
 
