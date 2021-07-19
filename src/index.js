@@ -1,11 +1,11 @@
-import { fleetList, drawBoard } from "./domManager";
+import { fleetList, drawBoard, setDragDropListeners } from "./domManager";
 import { Player } from "./player";
 
 const playerOne = new Player("Anon");
-drawBoard(playerOne.board.playingBoard);
-fleetList(playerOne.shipList);
-const playerTwo = new Player("Anon");
-drawBoard(playerTwo.board.playingBoard, false);
+fleetList(playerOne);
+drawBoard(playerOne);
+// const playerTwo = new Player("Anon");
+// drawBoard(playerTwo.board.playingBoard, false);
 
 export { playerOne };
 

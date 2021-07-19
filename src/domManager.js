@@ -1,8 +1,7 @@
-import { playerOne } from ".";
-import { GameBoard } from "./gameBoard";
-
 function drawBoard(board, player = true) {
-  let boardDiv = document.getElementById("player_one_board");
+  let boardDiv = player
+    ? document.getElementById("player_one_board")
+    : document.getElementById("player_two_board");
   boardDiv.innerHTML = "";
   let headerRow = document.createElement("tr");
   board.forEach((row, rI) => {
@@ -22,14 +21,15 @@ function drawBoard(board, player = true) {
     if (rI === 0) boardDiv.appendChild(headerRow);
     boardDiv.appendChild(tableRow);
   });
+  setDragDropListeners(playerObject);
 }
 
-function fleetList() {
+function fleetList(playerObject) {
   let listDom = document.getElementById("player_one_ships");
   let table = document.createElement("table");
   listDom.innerHTML = "";
-  playerOne.shipList.forEach((ship) => {
-    if (playerOne.board.placedShips.find((s) => s.shipObject.name == ship.name)) return;
+  playerObject.shipList.forEach((ship) => {
+    if (playerObject.board.placedShips.find((s) => s.shipObject.name == ship.name)) return;
     let draggableShip = document.createElement("tr");
     let shipName = document.createElement("th");
     draggableShip.draggable = true;
@@ -44,17 +44,17 @@ function fleetList() {
     table.appendChild(draggableShip);
     listDom.appendChild(table);
   });
-  setDragDropListeners();
 }
 
-function setDragDropListeners() {
+function setDragDropListeners(playerObject) {
+  debugger;
   document.querySelectorAll(".ship_piece").forEach((sp) => {
     sp.addEventListener("dragstart", dragStartHandler, false);
   });
   player_one_board.addEventListener("dragover", preventDef, false);
   player_one_ships_div.addEventListener("dragover", preventDef, false);
-  player_one_board.addEventListener("drop", dropHandler, false);
-  player_one_ships_div.addEventListener("drop", dropHandler, false);
+  player_one_board.addEventListener("drop", (e) => dropHandler(e, playerObject), false);
+  player_one_ships_div.addEventListener("drop", (e) => dropHandler(e, playerObject), false);
 }
 
 function preventDef(e) {
@@ -62,35 +62,36 @@ function preventDef(e) {
 }
 
 function dragStartHandler(e) {
+  console.log(e);
   e.dataTransfer.setData("name", e.target.dataset.name);
   e.dataTransfer.setData("origin", e.target.classList);
 }
 
-function dropHandler(e) {
+function dropHandler(e, playerObject) {
   e.preventDefault();
   let originSwitch = e.dataTransfer.getData("origin").includes("water_tile");
   let droppedName = e.dataTransfer.getData("name");
-  const shipObject = playerOne.shipList.find((sh) => sh.name == droppedName);
+  const shipObject = playerObject.shipList.find((sh) => sh.name == droppedName);
   if (e.target.classList.contains("water_tile")) {
     if (originSwitch) dropOnList();
     dropOnBoard();
   }
   if (e.target.classList.contains("ship_list") && originSwitch) dropOnList();
-  fleetList(playerOne.shipList);
+  fleetList(playerObject);
   //
   function dropOnBoard() {
     let targetPosition = [
       +e.target.parentElement.dataset.horizontalPos,
       +e.target.dataset.verticalPos,
     ];
-    playerOne.board.addShipToList(shipObject, targetPosition, vertical_toggle.checked);
+    playerObject.board.addShipToList(shipObject, targetPosition, vertical_toggle.checked);
   }
   function dropOnList() {
-    let pickedObject = playerOne.board.placedShips.find((x) => x.shipObject.name == droppedName);
+    let pickedObject = playerObject.board.placedShips.find((x) => x.shipObject.name == droppedName);
     console.log(pickedObject);
-    playerOne.board.placedShips.splice(playerOne.board.placedShips.indexOf(pickedObject), 1);
-    playerOne.board.iterateShipLength(pickedObject, true);
-    playerOne.board.refreshBoard();
+    playerObject.board.placedShips.splice(playerObject.board.placedShips.indexOf(pickedObject), 1);
+    playerObject.board.iterateShipLength(pickedObject, true);
+    playerObject.board.refreshBoard();
   }
 }
 
