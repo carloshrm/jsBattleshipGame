@@ -1,3 +1,6 @@
+import { playerOne } from ".";
+import { Player } from "./player";
+
 function drawBoard(board, player = true) {
   let boardDiv = player
     ? document.getElementById("player_one_board")
@@ -21,15 +24,14 @@ function drawBoard(board, player = true) {
     if (rI === 0) boardDiv.appendChild(headerRow);
     boardDiv.appendChild(tableRow);
   });
-  setDragDropListeners(playerObject);
 }
 
-function fleetList(playerObject) {
+function fleetList() {
   let listDom = document.getElementById("player_one_ships");
   let table = document.createElement("table");
   listDom.innerHTML = "";
-  playerObject.shipList.forEach((ship) => {
-    if (playerObject.board.placedShips.find((s) => s.shipObject.name == ship.name)) return;
+  playerOne.shipList.forEach((ship) => {
+    if (playerOne.board.placedShips.find((s) => s.shipObject.name == ship.name)) return;
     let draggableShip = document.createElement("tr");
     let shipName = document.createElement("th");
     draggableShip.draggable = true;
@@ -44,58 +46,92 @@ function fleetList(playerObject) {
     table.appendChild(draggableShip);
     listDom.appendChild(table);
   });
+  setDragDropListeners();
 }
 
-function setDragDropListeners(playerObject) {
-  debugger;
+function setDragDropListeners() {
   document.querySelectorAll(".ship_piece").forEach((sp) => {
     sp.addEventListener("dragstart", dragStartHandler, false);
   });
   player_one_board.addEventListener("dragover", preventDef, false);
   player_one_ships_div.addEventListener("dragover", preventDef, false);
-  player_one_board.addEventListener("drop", (e) => dropHandler(e, playerObject), false);
-  player_one_ships_div.addEventListener("drop", (e) => dropHandler(e, playerObject), false);
+  player_one_board.addEventListener("drop", dropHandler, false);
+  player_one_ships_div.addEventListener("drop", dropHandler, false);
+}
+function removeDragDropListeners() {
+  document.querySelectorAll(".ship_piece").forEach((sp) => {
+    sp.removeEventListener("dragstart", dragStartHandler, false);
+  });
+  player_one_board.removeEventListener("dragover", preventDef, false);
+  player_one_ships_div.removeEventListener("dragover", preventDef, false);
+  player_one_board.removeEventListener("drop", dropHandler, false);
+  player_one_ships_div.removeEventListener("drop", dropHandler, false);
 }
 
 function preventDef(e) {
   e.preventDefault();
 }
-
 function dragStartHandler(e) {
   console.log(e);
   e.dataTransfer.setData("name", e.target.dataset.name);
   e.dataTransfer.setData("origin", e.target.classList);
 }
 
-function dropHandler(e, playerObject) {
+function dropHandler(e) {
   e.preventDefault();
   let originSwitch = e.dataTransfer.getData("origin").includes("water_tile");
   let droppedName = e.dataTransfer.getData("name");
-  const shipObject = playerObject.shipList.find((sh) => sh.name == droppedName);
+  const shipObject = playerOne.shipList.find((sh) => sh.name == droppedName);
   if (e.target.classList.contains("water_tile")) {
     if (originSwitch) dropOnList();
     dropOnBoard();
   }
   if (e.target.classList.contains("ship_list") && originSwitch) dropOnList();
-  fleetList(playerObject);
+  fleetList();
   //
   function dropOnBoard() {
     let targetPosition = [
       +e.target.parentElement.dataset.horizontalPos,
       +e.target.dataset.verticalPos,
     ];
-    playerObject.board.addShipToList(shipObject, targetPosition, vertical_toggle.checked);
+    playerOne.board.addShipToList(shipObject, targetPosition, vertical_toggle.checked);
   }
   function dropOnList() {
-    let pickedObject = playerObject.board.placedShips.find((x) => x.shipObject.name == droppedName);
+    let pickedObject = playerOne.board.placedShips.find((x) => x.shipObject.name == droppedName);
     console.log(pickedObject);
-    playerObject.board.placedShips.splice(playerObject.board.placedShips.indexOf(pickedObject), 1);
-    playerObject.board.iterateShipLength(pickedObject, true);
-    playerObject.board.refreshBoard();
+    playerOne.board.placedShips.splice(playerOne.board.placedShips.indexOf(pickedObject), 1);
+    playerOne.board.iterateShipLength(pickedObject, true);
+    playerOne.board.refreshBoard();
+  }
+}
+function startGame() {
+  if (playerOne.board.placedShips.length !== 5) {
+    alert("place all your ships on the board before starting!");
+    return;
+  } else if (playerOne.board.placedShips.length === 5) {
+    const playerTwo = new Player("Skynet");
+    drawBoard(playerTwo.board.playingBoard, false);
   }
 }
 
-export { drawBoard, fleetList };
+function formListeners() {
+  player_name_form.value = playerOne.name;
+  startup_form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    console.log(e);
+    setName(e.target[0].value);
+    startGame();
+  });
+  player_name_form.addEventListener("change", (e) => setName(e.target.value));
+
+  function setName(name) {
+    if (name === "") return;
+    playerOne.name = name;
+    board_title.innerText = playerOne.name + " Fleet";
+  }
+}
+
+export { drawBoard, fleetList, setDragDropListeners, formListeners };
 
 // TODO - SETUP NEW BOARD FOR COMPUTER, MAKE RANDOM SHIP PLACEMENT -> START BUTTON
-// start button should cut drag/drop listeners
+// start button should cut drag/drop listeners replace with click to fire

@@ -4,28 +4,56 @@
   box-sizing: border-box;
 }
 
+header {
+  padding: 1em;
+  background-color: rgb(207, 207, 207);
+}
+
 tr,
 td {
   padding: 1rem;
 }
 th {
+  font-weight: normal;
 }
+
+#player_one_ships_div td {
+}
+#player_one_ships_div {
+  max-width: max-content;
+  text-align: center;
+}
+
+#controls_container {
+  background-color: antiquewhite;
+  padding: 0.5em;
+}
+
 .water_tile {
   background-color: aqua;
 }
 
+#player_one {
+  background-color: beige;
+  text-align: center;
+  padding: 1rem;
+}
 #player_one_board .ship_piece {
   background-color: brown;
 }
 
 #main_container {
   display: flex;
+  align-items: center;
+  max-width: max-content;
+  padding: 1rem;
+  border: 2px solid black;
 }
 
 #player_one_ships_div {
   display: grid;
   justify-items: center;
-  padding: 0.5rem;
+  padding: 1rem;
   border: 1px solid black;
 }
 #player_one_ships td {
