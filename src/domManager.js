@@ -68,6 +68,18 @@ function removeDragDropListeners() {
   player_one_ships_div.removeEventListener("drop", dropHandler, false);
 }
 
+function setGameplayListeners() {
+  document.querySelectorAll("td").forEach((tile) => {
+    tile.addEventListener("click", (e) => {
+      let targetPosition = [
+        +e.target.parentElement.dataset.horizontalPos,
+        +e.target.dataset.verticalPos,
+      ];
+      console.log(targetPosition);
+    });
+  });
+}
+
 function preventDef(e) {
   e.preventDefault();
 }
@@ -105,13 +117,12 @@ function dropHandler(e) {
   }
 }
 function startGame() {
-  if (playerOne.board.placedShips.length !== 5) {
-    alert("place all your ships on the board before starting!");
-    return;
-  } else if (playerOne.board.placedShips.length === 5) {
-    const playerTwo = new Player("Skynet");
-    drawBoard(playerTwo.board.playingBoard, false);
-  }
+  const playerTwo = new Player("Skynet");
+  drawBoard(playerTwo.board.playingBoard, false);
+  removeDragDropListeners();
+  player_one_ships_div.style.display = "none";
+  player_two.style.display = "block";
+  setGameplayListeners();
 }
 
 function formListeners() {
@@ -120,14 +131,19 @@ function formListeners() {
     e.preventDefault();
     console.log(e);
     setName(e.target[0].value);
-    startGame();
+    if (playerOne.board.placedShips.length !== 5) {
+      alert("place all your ships on the board before starting!");
+      return;
+    } else if (playerOne.board.placedShips.length === 5) {
+      startGame();
+    }
   });
   player_name_form.addEventListener("change", (e) => setName(e.target.value));
 
   function setName(name) {
     if (name === "") return;
     playerOne.name = name;
-    board_title.innerText = playerOne.name + " Fleet";
+    p1_board_title.innerText = playerOne.name + " Fleet";
   }
 }
 

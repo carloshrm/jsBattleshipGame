@@ -59,7 +59,6 @@ class GameBoard {
   }
 
   dropShell(x, y) {
-    //move to game logic
     let hitLocation = this.playingBoard[x][y];
     if (hitLocation === true) return;
     if (hitLocation.ship !== undefined && hitLocation.ship.isSunk === false) {
@@ -69,11 +68,6 @@ class GameBoard {
       hitLocation = true;
     }
   }
-  // each player gets a board
-  // if certain number of ships, start game
-  // TODO hit counter checks if the spot has been attacked, if not, marks the attack and checks if it hit a ship
-  // if it hits a ship, set a counter on that object
-  // TODO something that controls game flow, sets ships, makes boards, sets them on players players and swaps turns
 }
 
 export { GameBoard };

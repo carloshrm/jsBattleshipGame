@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-header {
+header,
+footer {
   padding: 1em;
   background-color: rgb(207, 207, 207);
 }
@@ -17,8 +18,6 @@ th {
   font-weight: normal;
 }
 
-#player_one_ships_div td {
-}
 #player_one_ships_div {
   max-width: max-content;
   text-align: center;
@@ -33,16 +32,23 @@ th {
   background-color: aqua;
 }
 
-#player_one {
+#player_one,
+#player_two {
   background-color: beige;
   text-align: center;
   padding: 1rem;
 }
+
+#player_two {
+  display: none;
+}
+
 #player_one_board .ship_piece {
   background-color: brown;
 }
 
-#main_container {
+#main_container,
+#sub_container {
   display: flex;
   align-items: center;
   max-width: max-content;
@@ -58,4 +64,5 @@ th {
 }
 #player_one_ships td {
   background-color: bisque;
+  margin: 1px;
 }
