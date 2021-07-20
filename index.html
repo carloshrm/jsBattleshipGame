@@ -9,25 +9,26 @@
   </head>
   <body>
     <header><p>Battleship</p></header>
-    <div class="controls_container">
-      <form action="">
+    <div id="controls_container">
+      <form action="" id="startup_form">
         <input type="text" name="player_name_form" id="player_name_form" placeholder="Name" />
-        <input type="button" value="Start" />
+        <input type="submit" value="Start" />
+        <button>reset</button>
       </form>
-      <button>reset</button>
     </div>
     <div id="main_container">
       <div id="player_one_ships_div" class="ship_list">
-        <div class="ship_list">
-          <p>Fleet</p>
-          <label for="vertical_toggle">Vertical</label>
-          <input type="checkbox" name="vertical_toggle" id="vertical_toggle" />
-        </div>
+        <h4>Place your ships</h4>
         <div id="player_one_ships" class="ship_list"></div>
+        <label for="vertical_toggle">Horizontal/Vertical</label>
+        <input type="checkbox" name="vertical_toggle" id="vertical_toggle" />
       </div>
-      <div id="player_one"><table id="player_one_board"></table></div>
-      <div id="player_two"><table id="player_two_board"></table></div>
+      <div id="player_one">
+        <h4 id="board_title">Player Fleet</h4>
+        <table id="player_one_board"></table>
+      </div>
     </div>
+    <div id="player_two"><table id="player_two_board"></table></div>
     <footer><p>Footer</p></footer>
   </body>
   <script src="main.js"></script>
