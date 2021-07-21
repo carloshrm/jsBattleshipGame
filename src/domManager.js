@@ -1,8 +1,8 @@
 import { playerOne } from ".";
 import { Player } from "./player";
 
-function drawBoard(board, player = true) {
-  let boardDiv = player
+function drawBoard(board, owner) {
+  let boardDiv = owner
     ? document.getElementById("player_one_board")
     : document.getElementById("player_two_board");
   boardDiv.innerHTML = "";
@@ -14,7 +14,7 @@ function drawBoard(board, player = true) {
       let tableCol = document.createElement("td");
       tableCol.dataset.verticalPos = cI;
       tableCol.classList.add("water_tile");
-      if (player && col) {
+      if (owner && col) {
         tableCol.classList.add("ship_piece");
         tableCol.draggable = true;
         tableCol.dataset.name = col.ship.name;
@@ -84,7 +84,6 @@ function preventDef(e) {
   e.preventDefault();
 }
 function dragStartHandler(e) {
-  console.log(e);
   e.dataTransfer.setData("name", e.target.dataset.name);
   e.dataTransfer.setData("origin", e.target.classList);
 }
@@ -106,23 +105,50 @@ function dropHandler(e) {
       +e.target.parentElement.dataset.horizontalPos,
       +e.target.dataset.verticalPos,
     ];
-    playerOne.board.addShipToList(shipObject, targetPosition, vertical_toggle.checked);
+    if (
+      playerOne.board.addShipToList(shipObject, targetPosition, vertical_toggle.checked) === false
+    )
+      alert("That position already occupied or not long enough for the selected ship.");
   }
   function dropOnList() {
     let pickedObject = playerOne.board.placedShips.find((x) => x.shipObject.name == droppedName);
-    console.log(pickedObject);
     playerOne.board.placedShips.splice(playerOne.board.placedShips.indexOf(pickedObject), 1);
     playerOne.board.iterateShipLength(pickedObject, true);
     playerOne.board.refreshBoard();
   }
 }
 function startGame() {
-  const playerTwo = new Player("Skynet");
-  drawBoard(playerTwo.board.playingBoard, false);
   removeDragDropListeners();
   player_one_ships_div.style.display = "none";
   player_two.style.display = "block";
   setGameplayListeners();
+  skynetSetup();
+}
+
+function skynetSetup() {
+  debugger;
+  const playerTwo = new Player("Skynet");
+  playerTwo.board.humanOwner = false;
+  drawBoard(playerTwo.board.playingBoard, playerTwo.board.humanOwner);
+  while (playerTwo.board.placedShips.length !== 5) {
+    addRandomShip();
+  }
+  function addRandomShip() {
+    let randomPos = [];
+    let randomShip = [];
+    do {
+      randomShip = playerTwo.shipList[Math.floor(Math.random() * 5)];
+    } while (playerTwo.board.placedShips.find((s) => s.shipObject.name == randomShip.name));
+    let keepTrying = true;
+    do {
+      randomPos = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+      keepTrying = playerTwo.board.addShipToList(
+        randomShip,
+        randomPos,
+        Math.floor(Math.random() * 2)
+      );
+    } while (keepTrying);
+  }
 }
 
 function formListeners() {

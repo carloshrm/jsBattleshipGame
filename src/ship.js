@@ -12,7 +12,7 @@ class Ship {
   checkIfSunk() {
     this.isSunk = this.hitTracker.length === this.shipLength && this.hitTracker.every(true);
   }
-  static setTypes = [
+  static shipSet = [
     new Ship("Carrier", 5),
     new Ship("Battleship", 4),
     new Ship("Cruiser", 3),

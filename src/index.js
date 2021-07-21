@@ -3,7 +3,7 @@ import { Player } from "./player";
 
 const playerOne = new Player("Player");
 fleetList(playerOne);
-drawBoard(playerOne.board.playingBoard);
+playerOne.board.refreshBoard();
 formListeners();
 
 export { playerOne };

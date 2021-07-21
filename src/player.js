@@ -5,7 +5,8 @@ class Player {
   constructor(name) {
     this.name = name; //get from DOM
     this.board = new GameBoard();
-    this.shipList = Ship.setTypes;
+    this.shipList = Ship.shipSet;
+    this.isRealPlayer = true;
   }
   // needs AI
 }

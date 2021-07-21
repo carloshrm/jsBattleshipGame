@@ -6,6 +6,7 @@ class GameBoard {
     this.attackCount = 0;
     this.playingBoard = GameBoard.setBlankBoard();
     this.placedShips = [];
+    this.humanOwner = true;
   }
 
   static setBlankBoard() {
@@ -23,7 +24,6 @@ class GameBoard {
   addShipToList(shipObject, pos, orientation) {
     let shipEntry = { shipObject: shipObject, position: pos, isVertical: orientation };
     if (this.iterateShipLength(shipEntry) == false) {
-      alert("has ship already");
       return false;
     }
     this.placedShips.push(shipEntry);
@@ -42,7 +42,7 @@ class GameBoard {
         ship.isVertical ? vertCoord++ : horCoord++;
       }
     });
-    drawBoard(this.playingBoard);
+    drawBoard(this.playingBoard, this.humanOwner);
   }
 
   iterateShipLength(targetShip, switchRemove = false) {
