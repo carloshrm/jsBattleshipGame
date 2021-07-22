@@ -126,7 +126,6 @@ function startGame() {
 }
 
 function skynetSetup() {
-  debugger;
   const playerTwo = new Player("Skynet");
   playerTwo.board.humanOwner = false;
   drawBoard(playerTwo.board.playingBoard, playerTwo.board.humanOwner);
@@ -141,6 +140,7 @@ function skynetSetup() {
     } while (playerTwo.board.placedShips.find((s) => s.shipObject.name == randomShip.name));
     let keepTrying = true;
     do {
+      debugger;
       randomPos = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
       keepTrying = playerTwo.board.addShipToList(
         randomShip,
