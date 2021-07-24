@@ -14,7 +14,7 @@ class GameBoard {
     for (let i = 0; i < 10; i++) {
       let vertical = [];
       for (let j = 0; j < 10; j++) {
-        vertical[j] = false;
+        vertical[j] = { ship: null, hitMarker: false };
       }
       horizontal[i] = vertical;
     }
@@ -27,19 +27,15 @@ class GameBoard {
       return false;
     }
     this.placedShips.push(shipEntry);
-    this.refreshBoard();
+    this.setShipsOnBoard();
   }
 
-  refreshBoard() {
+  setShipsOnBoard() {
     this.placedShips.forEach((ship) => {
       let vertCoord = ship.position[0];
       let horCoord = ship.position[1];
-
       for (let i = 0; i < ship.shipObject.shipLength; i++) {
-        this.playingBoard[vertCoord][horCoord] = {
-          ship: ship.shipObject,
-          hitMarker: false,
-        };
+        this.playingBoard[vertCoord][horCoord].ship = ship.shipObject;
         ship.isVertical ? vertCoord++ : horCoord++;
       }
     });
@@ -49,12 +45,13 @@ class GameBoard {
   iterateShipLength(targetShip, switchRemove = false) {
     let vertPos = targetShip.position[0];
     let horPos = targetShip.position[1];
-    if (vertPos + targetShip.shipObject.shipLength > this.playingBoard.length) return false;
+    let lengthCheck = targetShip.isVertical ? vertPos : horPos;
+    if (lengthCheck + targetShip.shipObject.shipLength > this.playingBoard.length) return false;
     for (let i = 0; i < targetShip.shipObject.shipLength; i++) {
-      if (!switchRemove && this.playingBoard[vertPos][horPos] !== false) {
+      if (!switchRemove && this.playingBoard[vertPos][horPos].ship !== null) {
         return false;
       }
-      if (switchRemove) this.playingBoard[vertPos][horPos] = false;
+      if (switchRemove) this.playingBoard[vertPos][horPos].ship = null;
       targetShip.isVertical ? vertPos++ : horPos++;
     }
     return true;
@@ -62,13 +59,12 @@ class GameBoard {
 
   dropShell(x, y) {
     let hitLocation = this.playingBoard[x][y];
-    if (hitLocation === true) return;
-    if (hitLocation.ship !== undefined && hitLocation.ship.isSunk === false) {
+    if (hitLocation.hitMarker === true) return false;
+    hitLocation.hitMarker = true;
+    if (hitLocation.ship !== null && hitLocation.ship.isSunk === false) {
       hitLocation.ship.hit();
-      hitLocation.hitMarker = true;
-    } else {
-      hitLocation = true;
     }
+    return true;
   }
 }
 

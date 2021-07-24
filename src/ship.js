@@ -2,15 +2,15 @@ class Ship {
   constructor(name, shipLength) {
     this.name = name;
     this.shipLength = shipLength;
-    this.hitTracker = [];
+    this.hitTracker = 0;
     this.isSunk = false;
   }
   hit() {
-    if (this.hitTracker.length < this.shipLength) this.hitTracker.push(true);
+    if (this.hitTracker < this.shipLength) this.hitTracker++;
     this.checkIfSunk();
   }
   checkIfSunk() {
-    this.isSunk = this.hitTracker.length === this.shipLength && this.hitTracker.every(true);
+    this.isSunk = this.hitTracker === this.length;
   }
   static shipSet = [
     new Ship("Carrier", 5),

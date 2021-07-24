@@ -29,7 +29,13 @@ th {
 }
 
 .water_tile {
-  background-color: aqua;
+  background-color: rgb(107, 151, 151);
+}
+.hit_tile {
+  background-color: darkblue !important;
+}
+.missed_tile {
+  background-color: slateblue;
 }
 
 #player_one,
@@ -44,7 +50,7 @@ th {
 }
 
 #player_one_board .ship_piece {
-  background-color: brown;
+  background-color: rgb(82, 15, 15);
 }
 
 #main_container,
