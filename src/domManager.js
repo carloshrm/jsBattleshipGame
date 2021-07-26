@@ -5,7 +5,6 @@ function drawBoard(board, owner) {
     ? document.getElementById("player_one_board")
     : document.getElementById("player_two_board");
   boardDiv.innerHTML = "";
-  let headerRow = document.createElement("tr");
   board.forEach((row, rI) => {
     let tableRow = document.createElement("tr");
     tableRow.dataset.horizontalPos = rI;
@@ -20,7 +19,6 @@ function drawBoard(board, owner) {
       }
       tableRow.appendChild(tableCol);
     });
-    if (rI === 0) boardDiv.appendChild(headerRow);
     boardDiv.appendChild(tableRow);
   });
 
@@ -87,6 +85,11 @@ function setGameplayListeners() {
   });
 }
 
+function removeGameplayListeners() {
+  document.querySelectorAll("#player_two_board .water_tile").forEach((tile) => {
+    tile.removeEventListener("click", fireClickHandler);
+  });
+}
 function preventDef(e) {
   e.preventDefault();
 }
@@ -172,6 +175,7 @@ export {
   removeDragDropListeners,
   boardDisplay,
   setGameplayListeners,
+  removeGameplayListeners,
   generateRandomCoords,
 };
 

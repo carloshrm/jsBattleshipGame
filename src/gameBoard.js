@@ -64,6 +64,7 @@ class GameBoard {
     if (hitLocation.ship !== null && hitLocation.ship.isSunk === false) {
       hitLocation.ship.hit();
     }
+    this.attackCount++;
     return true;
   }
 }

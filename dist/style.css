@@ -1,3 +1,10 @@
+:root {
+  --dark-color: #117660;
+  --back-color: #09323b;
+  --mid-color: #04b16f;
+  --light-color: #14e114;
+  --shade-color: #e0effd;
+}
 * {
   margin: 0;
   padding: 0;

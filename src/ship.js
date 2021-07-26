@@ -6,19 +6,19 @@ class Ship {
     this.isSunk = false;
   }
   hit() {
-    if (this.hitTracker < this.shipLength) this.hitTracker++;
-    this.checkIfSunk();
+    this.hitTracker++;
+    if (this.hitTracker === this.shipLength) this.isSunk = true;
   }
-  checkIfSunk() {
-    this.isSunk = this.hitTracker === this.length;
+  static shipSet() {
+    let set = [
+      new Ship("Carrier", 5),
+      new Ship("Battleship", 4),
+      new Ship("Cruiser", 3),
+      new Ship("Submarine", 3),
+      new Ship("Destroyer", 2),
+    ];
+    return set;
   }
-  static shipSet = [
-    new Ship("Carrier", 5),
-    new Ship("Battleship", 4),
-    new Ship("Cruiser", 3),
-    new Ship("Submarine", 3),
-    new Ship("Destroyer", 2),
-  ];
 }
 
 export { Ship };

@@ -5,6 +5,7 @@ import {
   setGameplayListeners,
   boardDisplay,
   generateRandomCoords,
+  removeGameplayListeners,
 } from "./domManager";
 import { Player } from "./player";
 
@@ -23,13 +24,26 @@ function startGame() {
 function runTurn(clickX, clickY) {
   playerTwo.board.dropShell(clickX, clickY);
   let result;
-  do {
+  while (!result) {
     let [x, y] = generateRandomCoords();
     result = playerOne.board.dropShell(x, y);
-  } while (!result);
+  }
   playerTwo.board.setShipsOnBoard();
   playerOne.board.setShipsOnBoard();
   setGameplayListeners();
+  console.clear();
+  console.log(playerTwo.shipList);
+  console.log(playerOne.shipList);
+  if (playerTwo.shipList.every((ship) => ship.isSunk === true)) {
+    showWinner(playerOne.name);
+  } else if (playerOne.shipList.every((ship) => ship.isSunk === true)) {
+    showWinner(playerTwo.name);
+  }
+}
+
+function showWinner(player) {
+  removeGameplayListeners();
+  feedback_log.innerText = player + " has won!";
 }
 
 export { playerOne, startGame, runTurn };
