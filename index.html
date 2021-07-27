@@ -8,12 +8,12 @@
     <title>BattleShip</title>
   </head>
   <body>
-    <header><p>Battleship</p></header>
+    <header><h3>Battleship</h3></header>
     <div id="controls_container">
       <form action="" id="startup_form">
         <input type="text" name="player_name_form" id="player_name_form" placeholder="Name" />
-        <input type="submit" value="Start" id="startup_button" />
-        <button>reset</button>
+        <input type="submit" value="START" id="startup_button" />
+        <button id="reset_button">RESET</button>
       </form>
       <div id="log_div"><p id="feedback_log"></p></div>
     </div>
@@ -21,8 +21,11 @@
       <div id="player_one_ships_div" class="ship_list">
         <h4>Place your ships</h4>
         <div id="player_one_ships" class="ship_list"></div>
-        <label for="vertical_toggle">Horizontal/Vertical</label>
-        <input type="checkbox" name="vertical_toggle" id="vertical_toggle" />
+        <p for="vertical_toggle">Horizontal/Vertical</p>
+        <label class="switch">
+          <input type="checkbox" name="vertical_toggle" id="vertical_toggle" />
+          <span class="slider round"></span>
+        </label>
       </div>
       <div id="player_one">
         <h4 id="p1_board_title">Player Fleet</h4>
