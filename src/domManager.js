@@ -64,6 +64,9 @@ function setDragDropListeners() {
   document.querySelectorAll(".ship_piece").forEach((sp) => {
     sp.addEventListener("dragstart", dragStartHandler, false);
   });
+  // document.querySelectorAll(".ship_list").forEach((li) => {
+  //   li.addEventListener("drop", dropHandler, false);
+  // });
   player_one_board.addEventListener("dragover", preventDef, false);
   player_one_ships_div.addEventListener("dragover", preventDef, false);
   player_one_board.addEventListener("drop", dropHandler, false);

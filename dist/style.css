@@ -1,20 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Electrolize&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
 :root {
-  --dark-color: #117660;
-  --back-color: #09323b;
-  --mid-color: #04b16f;
-  --light-color: #14e114;
-  --shade-color: #e0effd;
+  --dark-color: #4b5e59;
+  --back-color: #07242b;
+  --mid-color: #42796d;
+  --light-color: #20cc20;
+  --missed-color: #184550;
+  --hit-color: #6b1313;
+  --ship-color: #ffcc26;
 }
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  background-color: var(--back-color);
+  color: var(--light-color);
+  font-family: "Inconsolata", monospace;
+  font-size: 1.2em;
+}
+/* font-family: 'Electrolize', sans-serif; */
+/* font-family: 'Inconsolata', monospace; */
 
 header,
 footer {
-  padding: 1em;
-  background-color: rgb(207, 207, 207);
+  font-family: "Electrolize", sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 2em;
+  padding: 1rem;
 }
 
 tr,
@@ -23,59 +38,133 @@ td {
 }
 th {
   font-weight: normal;
+  padding-top: 1rem;
 }
 
 #player_one_ships_div {
   max-width: max-content;
   text-align: center;
 }
+#player_one_ships_div p {
+  margin-top: 2rem;
+}
 
 #controls_container {
-  background-color: antiquewhite;
+  background-color: var(--dark-color);
   padding: 0.5em;
 }
 
+#player_name_form,
+#reset_button,
+#startup_button {
+  width: 120px;
+  border: unset;
+  padding: 0.5em;
+}
+#player_name_form {
+  background-color: var(--missed-color);
+  text-align: center;
+  color: white;
+  border: 1px solid black;
+}
+#player_name_form {
+}
+#reset_button,
+#startup_button {
+  background-color: var(--back-color);
+  color: var(--light-color);
+  border: 1px solid var(--mid-color);
+}
 .water_tile {
-  background-color: rgb(107, 151, 151);
+  background-color: var(--mid-color);
 }
 .hit_tile {
-  background-color: darkblue !important;
+  background-color: var(--hit-color) !important;
 }
 .missed_tile {
-  background-color: slateblue;
+  background-color: var(--missed-color);
 }
 
 #player_one,
 #player_two {
-  background-color: beige;
+  min-width: max-content;
+  background-color: var(--back-color);
+  border: 1px solid var(--light-color);
   text-align: center;
   padding: 1rem;
+  margin-right: 1rem;
 }
-
 #player_two {
   display: none;
 }
-
 #player_one_board .ship_piece {
-  background-color: rgb(82, 15, 15);
+  background-color: var(--ship-color);
 }
-
 #main_container,
 #sub_container {
   display: flex;
   align-items: center;
-  max-width: max-content;
   padding: 1rem;
-  border: 2px solid black;
+  background-color: var(--dark-color);
 }
-
 #player_one_ships_div {
-  display: grid;
+  background-color: var(--back-color);
+  display: flex;
+  flex-flow: column wrap;
   justify-items: center;
   padding: 1rem;
-  border: 1px solid black;
+  margin: 1rem;
+  border: 1px solid var(--light-color);
+  user-select: none;
 }
 #player_one_ships td {
-  background-color: bisque;
+  background-color: var(--ship-color);
   margin: 1px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 10px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--dark-color);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  border-radius: 20px;
+  height: 22px;
+  width: 22px;
+  left: 6px;
+  bottom: 4px;
+  background-color: #ffffff;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #8cc900;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
 }

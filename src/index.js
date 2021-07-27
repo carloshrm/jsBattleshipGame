@@ -23,17 +23,17 @@ function startGame() {
 }
 function runTurn(clickX, clickY) {
   playerTwo.board.dropShell(clickX, clickY);
-  let result;
-  while (!result) {
-    let [x, y] = generateRandomCoords();
-    result = playerOne.board.dropShell(x, y);
+  setTimeout(attackPlayer(), 1500);
+  function attackPlayer() {
+    let result;
+    while (!result) {
+      let [x, y] = generateRandomCoords();
+      result = playerOne.board.dropShell(x, y);
+    }
   }
   playerTwo.board.setShipsOnBoard();
   playerOne.board.setShipsOnBoard();
   setGameplayListeners();
-  console.clear();
-  console.log(playerTwo.shipList);
-  console.log(playerOne.shipList);
   if (playerTwo.shipList.every((ship) => ship.isSunk === true)) {
     showWinner(playerOne.name);
   } else if (playerOne.shipList.every((ship) => ship.isSunk === true)) {
