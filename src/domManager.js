@@ -64,9 +64,7 @@ function setDragDropListeners() {
   document.querySelectorAll(".ship_piece").forEach((sp) => {
     sp.addEventListener("dragstart", dragStartHandler, false);
   });
-  // document.querySelectorAll(".ship_list").forEach((li) => {
-  //   li.addEventListener("drop", dropHandler, false);
-  // });
+
   player_one_board.addEventListener("dragover", preventDef, false);
   player_one_ships_div.addEventListener("dragover", preventDef, false);
   player_one_board.addEventListener("drop", dropHandler, false);
@@ -131,14 +129,14 @@ function dropHandler(e) {
   }
 }
 
-function boardDisplay() {
+function boardDisplay(p2Name) {
   player_one_ships_div.style.display = "none";
   player_two.style.display = "block";
   startup_form.style.display = "none";
+  p2_board_title.innerText = p2Name + " Sea Area.";
 }
 
 function fireClickHandler(e) {
-  debugger;
   const clickX = +e.target.parentElement.dataset.horizontalPos;
   const clickY = +e.target.dataset.verticalPos;
   runTurn(clickX, clickY);
@@ -161,7 +159,7 @@ function formListeners() {
   function setName(name) {
     if (name === "") return;
     playerOne.name = name;
-    p1_board_title.innerText = playerOne.name + " Fleet";
+    p1_board_title.innerText = playerOne.name + " Sea Area.";
   }
 }
 

@@ -104,7 +104,6 @@ th {
 #sub_container {
   display: flex;
   align-items: center;
-  padding: 1rem;
   background-color: var(--dark-color);
 }
 #player_one_ships_div {
@@ -120,6 +119,14 @@ th {
 #player_one_ships td {
   background-color: var(--ship-color);
   margin: 1px;
+}
+#log {
+  position: relative;
+  text-align: center;
+  background-color: wheat;
+}
+#log p {
+  font-size: 1.5em;
 }
 
 .switch {

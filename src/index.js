@@ -17,20 +17,13 @@ formListeners();
 
 function startGame() {
   removeDragDropListeners();
-  boardDisplay();
   playerTwo = Player.computerPlayerSetup();
+  boardDisplay(playerTwo.name);
   setGameplayListeners();
 }
 function runTurn(clickX, clickY) {
   playerTwo.board.dropShell(clickX, clickY);
-  setTimeout(attackPlayer(), 1500);
-  function attackPlayer() {
-    let result;
-    while (!result) {
-      let [x, y] = generateRandomCoords();
-      result = playerOne.board.dropShell(x, y);
-    }
-  }
+  setTimeout(attackPlayer(), 1000);
   playerTwo.board.setShipsOnBoard();
   playerOne.board.setShipsOnBoard();
   setGameplayListeners();
@@ -39,11 +32,18 @@ function runTurn(clickX, clickY) {
   } else if (playerOne.shipList.every((ship) => ship.isSunk === true)) {
     showWinner(playerTwo.name);
   }
+  function attackPlayer() {
+    let result;
+    while (!result) {
+      let [x, y] = generateRandomCoords();
+      result = playerOne.board.dropShell(x, y);
+    }
+  }
 }
 
 function showWinner(player) {
   removeGameplayListeners();
-  feedback_log.innerText = player + " has won!";
+  log.innerText = player + " has won!";
 }
 
 export { playerOne, startGame, runTurn };

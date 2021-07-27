@@ -10,7 +10,7 @@ class Player {
   }
 
   static computerPlayerSetup() {
-    const playerTwo = new Player("Skynet");
+    const playerTwo = new Player("HAL");
     playerTwo.board.humanOwner = false;
     drawBoard(playerTwo.board.playingBoard, playerTwo.board.humanOwner);
     while (playerTwo.board.placedShips.length !== 5) {
