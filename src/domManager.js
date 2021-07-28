@@ -1,4 +1,4 @@
-import { playerOne, runTurn, startGame } from ".";
+import { initialSetup, playerOne, runTurn, startGame } from ".";
 
 function drawBoard(board, owner) {
   let boardDiv = owner
@@ -11,7 +11,7 @@ function drawBoard(board, owner) {
     row.forEach((col, cI) => {
       let tableCol = document.createElement("td");
       tableCol.dataset.verticalPos = cI;
-      tableCol.classList.add(checkHitStatus(col));
+      tableCol.classList.add("water_tile");
       if (owner && col.ship) {
         tableCol.classList.add("ship_piece");
         tableCol.draggable = true;
@@ -21,20 +21,17 @@ function drawBoard(board, owner) {
     });
     boardDiv.appendChild(tableRow);
   });
-
-  function checkHitStatus(col) {
-    let hitDisplayClass = "";
-    if (col.hitMarker) {
-      if (col.ship !== null) {
-        hitDisplayClass = "hit_tile";
-      } else {
-        hitDisplayClass = "missed_tile";
-      }
+}
+function checkHitStatus(hitSpot) {
+  let hitDisplayClass = "";
+  if (hitSpot.hitMarker) {
+    if (hitSpot.ship !== null) {
+      hitDisplayClass = "hit_tile";
     } else {
-      hitDisplayClass = "water_tile";
+      hitDisplayClass = "missed_tile";
     }
-    return hitDisplayClass;
   }
+  return hitDisplayClass;
 }
 
 function fleetList() {
@@ -57,14 +54,13 @@ function fleetList() {
     table.appendChild(draggableShip);
     listDom.appendChild(table);
   });
-  setDragDropListeners();
+  setDragDropListeners(playerOne);
 }
 
 function setDragDropListeners() {
   document.querySelectorAll(".ship_piece").forEach((sp) => {
     sp.addEventListener("dragstart", dragStartHandler, false);
   });
-
   player_one_board.addEventListener("dragover", preventDef, false);
   player_one_ships_div.addEventListener("dragover", preventDef, false);
   player_one_board.addEventListener("drop", dropHandler, false);
@@ -82,7 +78,7 @@ function removeDragDropListeners() {
 
 function setGameplayListeners() {
   document.querySelectorAll("#player_two_board .water_tile").forEach((tile) => {
-    tile.addEventListener("click", fireClickHandler);
+    tile.addEventListener("click", fireClickHandler, { once: true });
   });
 }
 
@@ -94,6 +90,7 @@ function removeGameplayListeners() {
 function preventDef(e) {
   e.preventDefault();
 }
+
 function dragStartHandler(e) {
   e.dataTransfer.setData("name", e.target.dataset.name);
   e.dataTransfer.setData("origin", e.target.classList);
@@ -119,7 +116,7 @@ function dropHandler(e) {
     if (
       playerOne.board.addShipToList(shipObject, targetPosition, vertical_toggle.checked) === false
     )
-      alert("That position already occupied or not long enough for the selected ship.");
+      "That position already occupied or not long enough for the selected ship.";
   }
   function dropOnList() {
     let pickedObject = playerOne.board.placedShips.find((x) => x.shipObject.name == droppedName);
@@ -128,39 +125,53 @@ function dropHandler(e) {
     playerOne.board.setShipsOnBoard();
   }
 }
-
 function boardDisplay(p2Name) {
   player_one_ships_div.style.display = "none";
   player_two.style.display = "block";
-  startup_form.style.display = "none";
+  player_name_form.style.display = "none";
+  startup_button.style.display = "none";
   p2_board_title.innerText = p2Name + " Sea Area.";
+  log_text.innerText = "Game Start! Click a spot on the enemy board to fire a shot.";
 }
 
 function fireClickHandler(e) {
   const clickX = +e.target.parentElement.dataset.horizontalPos;
   const clickY = +e.target.dataset.verticalPos;
-  runTurn(clickX, clickY);
+  runTurn(e, clickX, clickY);
 }
 
 function formListeners() {
   player_name_form.value = playerOne.name;
+  setName(playerOne.name);
   startup_form.addEventListener("submit", (e) => {
     e.preventDefault();
     setName(e.target[0].value);
     if (playerOne.board.placedShips.length !== 5) {
-      alert("place all your ships on the board before starting!");
+      log_text.innerText = "Place all your ships before starting.";
+      log_text.classList.add("alert");
+      setTimeout(() => {
+        log_text.classList.remove("alert");
+      }, 3000);
       return;
     } else if (playerOne.board.placedShips.length === 5) {
       startGame();
     }
   });
   player_name_form.addEventListener("change", (e) => setName(e.target.value));
-
+  reset_button.addEventListener("click", resetGame);
   function setName(name) {
     if (name === "") return;
     playerOne.name = name;
     p1_board_title.innerText = playerOne.name + " Sea Area.";
   }
+}
+function resetGame(e) {
+  e.preventDefault();
+  player_one_ships_div.style.display = null;
+  player_two.style.display = null;
+  player_name_form.style.display = null;
+  startup_button.style.display = null;
+  initialSetup();
 }
 
 function generateRandomCoords(boardSize = 10) {
@@ -178,7 +189,5 @@ export {
   setGameplayListeners,
   removeGameplayListeners,
   generateRandomCoords,
+  checkHitStatus,
 };
-
-// TODO - SETUP NEW BOARD FOR COMPUTER, MAKE RANDOM SHIP PLACEMENT -> START BUTTON
-// start button should cut drag/drop listeners replace with click to fire

@@ -1,5 +1,4 @@
 import { drawBoard } from "./domManager";
-import { Ship } from "./ship";
 
 class GameBoard {
   constructor() {
@@ -63,6 +62,11 @@ class GameBoard {
     hitLocation.hitMarker = true;
     if (hitLocation.ship !== null && hitLocation.ship.isSunk === false) {
       hitLocation.ship.hit();
+      log_text.innerText += this.humanOwner
+        ? "One of your ships has been hit!"
+        : "You hit an enemy ship!";
+    } else {
+      log_text.innerText += "Shot Missed.";
     }
     this.attackCount++;
     return true;

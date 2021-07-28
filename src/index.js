@@ -6,48 +6,54 @@ import {
   boardDisplay,
   generateRandomCoords,
   removeGameplayListeners,
+  checkHitStatus,
 } from "./domManager";
 import { Player } from "./player";
 
-let playerOne = new Player("Player");
-let playerTwo = undefined;
-fleetList(playerOne);
-playerOne.board.setShipsOnBoard();
-formListeners();
-
+let playerOne;
+let playerTwo;
+function initialSetup() {
+  log_text.innerText = "Drag your fleet onto the board and hit start!";
+  playerOne = new Player("Player");
+  playerTwo = undefined;
+  fleetList();
+  playerOne.board.setShipsOnBoard();
+  formListeners();
+}
 function startGame() {
   removeDragDropListeners();
   playerTwo = Player.computerPlayerSetup();
   boardDisplay(playerTwo.name);
   setGameplayListeners();
 }
-function runTurn(clickX, clickY) {
+function runTurn(event, clickX, clickY) {
+  log_text.innerText = "";
   playerTwo.board.dropShell(clickX, clickY);
-  setTimeout(attackPlayer(), 1000);
-  playerTwo.board.setShipsOnBoard();
-  playerOne.board.setShipsOnBoard();
-  setGameplayListeners();
+  event.target.classList.add(checkHitStatus(playerTwo.board.playingBoard[clickX][clickY]));
+  attackPlayer();
   if (playerTwo.shipList.every((ship) => ship.isSunk === true)) {
     showWinner(playerOne.name);
   } else if (playerOne.shipList.every((ship) => ship.isSunk === true)) {
     showWinner(playerTwo.name);
   }
   function attackPlayer() {
-    let result;
+    let result, x, y;
     while (!result) {
-      let [x, y] = generateRandomCoords();
+      [x, y] = generateRandomCoords();
       result = playerOne.board.dropShell(x, y);
     }
+    let hitSpot = document
+      .querySelector("#player_one_board")
+      .querySelector(`[data-horizontal-pos='${x}']`)
+      .querySelector(`[data-vertical-pos='${y}']`);
+    hitSpot.classList.add(checkHitStatus(playerOne.board.playingBoard[x][y]));
   }
 }
-
 function showWinner(player) {
   removeGameplayListeners();
-  log.innerText = player + " has won!";
+  log_text.innerText = player + " has won!";
 }
 
-export { playerOne, startGame, runTurn };
+initialSetup();
 
-// another board for pc
-// place ships in random places
-// different display
+export { playerOne, startGame, runTurn, initialSetup };
