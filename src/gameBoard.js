@@ -62,11 +62,13 @@ class GameBoard {
     hitLocation.hitMarker = true;
     if (hitLocation.ship !== null && hitLocation.ship.isSunk === false) {
       hitLocation.ship.hit();
-      log_text.innerText += this.humanOwner
-        ? "One of your ships has been hit!"
-        : "You hit an enemy ship!";
+      log_text.innerHTML += this.humanOwner
+        ? "<p> The enemy hit one of your ships!  </p>"
+        : "<p> You hit an enemy ship!  </p>";
     } else {
-      log_text.innerText += "Shot Missed.";
+      log_text.innerHTML += this.humanOwner
+        ? "<p> The enemy shot missed.  </p>"
+        : "<p> Your shot missed.  </p>";
     }
     this.attackCount++;
     return true;

@@ -3,11 +3,11 @@
 :root {
   --dark-color: #434e4c;
   --back-color: #0f2130;
-  --mid-color: #696663;
+  --mid-color: #708592;
   --light-color: #03a003;
-  --missed-color: #27242e;
-  --hit-color: #810505;
-  --ship-color: #ffcc26;
+  --missed-color: #2f4150;
+  --hit-color: #990303;
+  --ship-color: #ffb326;
 }
 * {
   margin: 0;
@@ -19,21 +19,29 @@ body {
   background-color: var(--back-color);
   color: var(--light-color);
   font-family: "Inconsolata", monospace;
-  font-size: 1.2em;
 }
 /* font-family: 'Electrolize', sans-serif; */
 /* font-family: 'Inconsolata', monospace; */
-header,
-footer {
+header {
   font-family: "Electrolize", sans-serif;
   text-transform: uppercase;
   font-weight: bold;
+  padding: 0.5rem;
   font-size: 2em;
-  padding: 1rem;
+}
+footer {
+  font-family: "Electrolize", sans-serif;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  padding: 1rem 0.5rem;
+}
+a {
+  color: white;
 }
 tr,
 td {
   padding: 1rem;
+  content: "";
 }
 th {
   font-weight: normal;
@@ -42,19 +50,13 @@ th {
 
 @keyframes blast {
   from {
-    margin-left: 100%;
-    width: 300%;
+    transform: scale(1.8);
   }
-
-  75% {
-    font-size: 300%;
-    margin-left: 25%;
-    width: 150%;
+  80% {
+    transform: scale(0.8);
   }
-
   to {
-    margin-left: 0%;
-    width: 100%;
+    transform: scale(1);
   }
 }
 
@@ -105,6 +107,12 @@ th {
 .missed_tile {
   background-color: var(--missed-color);
 }
+
+.hit_tile,
+.missed_tile {
+  animation-name: blast;
+  animation-duration: 1s;
+}
 #player_one,
 #player_two {
   min-width: max-content;
@@ -138,19 +146,20 @@ th {
   background-color: var(--ship-color);
   margin: 1px;
 }
+
 #log {
   position: relative;
   text-align: center;
   background-color: var(--back-color);
   border: 1px solid var(--light-color);
-  padding: 1rem;
 }
 #log .alert {
   color: red;
   border: 1px solid red;
 }
 #log p {
-  font-size: 1.5em;
+  font-size: 1.2rem;
+  padding: 0.2rem;
 }
 .switch {
   position: relative;

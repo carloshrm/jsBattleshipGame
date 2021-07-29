@@ -131,7 +131,7 @@ function boardDisplay(p2Name) {
   player_name_form.style.display = "none";
   startup_button.style.display = "none";
   p2_board_title.innerText = p2Name + " Sea Area.";
-  log_text.innerText = "Game Start! Click a spot on the enemy board to fire a shot.";
+  log_text.innerText = "Click a spot on the enemy board to fire a shot.";
 }
 
 function fireClickHandler(e) {
@@ -162,7 +162,7 @@ function formListeners() {
   function setName(name) {
     if (name === "") return;
     playerOne.name = name;
-    p1_board_title.innerText = playerOne.name + " Sea Area.";
+    p1_board_title.innerText = playerOne.name + " Sea.";
   }
 }
 function resetGame(e) {

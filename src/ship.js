@@ -7,7 +7,9 @@ class Ship {
   }
   hit() {
     this.hitTracker++;
-    if (this.hitTracker === this.shipLength) this.isSunk = true;
+    if (this.hitTracker === this.shipLength) {
+      this.isSunk = true;
+    }
   }
   static shipSet() {
     let set = [

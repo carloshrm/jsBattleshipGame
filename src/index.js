@@ -27,14 +27,14 @@ function startGame() {
   setGameplayListeners();
 }
 function runTurn(event, clickX, clickY) {
-  log_text.innerText = "";
+  log_text.innerHTML = `<p> Turn: ${playerOne.board.attackCount} </p>`;
   playerTwo.board.dropShell(clickX, clickY);
   event.target.classList.add(checkHitStatus(playerTwo.board.playingBoard[clickX][clickY]));
   attackPlayer();
   if (playerTwo.shipList.every((ship) => ship.isSunk === true)) {
-    showWinner(playerOne.name);
+    showWinner(playerOne);
   } else if (playerOne.shipList.every((ship) => ship.isSunk === true)) {
-    showWinner(playerTwo.name);
+    showWinner(playerTwo);
   }
   function attackPlayer() {
     let result, x, y;
@@ -51,7 +51,7 @@ function runTurn(event, clickX, clickY) {
 }
 function showWinner(player) {
   removeGameplayListeners();
-  log_text.innerText = player + " has won!";
+  log_text.innerText = player.name + ` has won after ${player.board.attackCount} shots.`;
 }
 
 initialSetup();
