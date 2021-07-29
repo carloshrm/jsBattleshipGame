@@ -130,7 +130,7 @@ function boardDisplay(p2Name) {
   player_two.style.display = "block";
   player_name_form.style.display = "none";
   startup_button.style.display = "none";
-  p2_board_title.innerText = p2Name + " Sea Area.";
+  p2_board_title.innerText = p2Name + " Sea.";
   log_text.innerText = "Click a spot on the enemy board to fire a shot.";
 }
 
