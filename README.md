@@ -1,2 +1,3 @@
 # jsBattleshipGame
-Old battleship game, in Javascript!
+
+Battleship game made in Javascript.
