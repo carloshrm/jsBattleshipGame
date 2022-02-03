@@ -1,48 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>BattleShip</title>
-  </head>
-  <header><h3>Battleship</h3></header>
-  <body>
-    <div id="log"><p id="log_text"></p></div>
-    <div id="controls_container">
-      <form action="" id="startup_form">
-        <input type="text" name="player_name_form" id="player_name_form" placeholder="Name" />
-        <input type="submit" value="START" id="startup_button" />
-        <button id="reset_button">RESET</button>
-      </form>
-      <div id="log_div"><p id="feedback_log"></p></div>
-    </div>
-    <div id="main_container">
-      <div id="player_one_ships_div" class="ship_list">
-        <h4>Fleet</h4>
-        <div id="player_one_ships" class="ship_list"></div>
-        <p for="vertical_toggle">Horizontal/Vertical</p>
-        <label class="switch">
-          <input type="checkbox" name="vertical_toggle" id="vertical_toggle" />
-          <span class="slider round"></span>
-        </label>
-      </div>
-      <div id="player_one">
-        <h4 id="p1_board_title"></h4>
-        <table id="player_one_board"></table>
-      </div>
-      <div id="player_two">
-        <h4 id="p2_board_title"></h4>
-        <table id="player_two_board"></table>
-      </div>
-    </div>
-  </body>
-  <footer>
-    <p>
-      Made by carloshrm, 2021.
-      <a href="https://github.com/carloshrm/jsBattleshipGame">Source on Github.</a>
-    </p>
-  </footer>
-  <script src="main.js"></script>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>BattleShip</title>
+    </head>
+    <header><h3>Battleship</h3></header>
+    <body>
+        <div id="log"><p id="log_text"></p></div>
+        <div id="controls_container">
+            <form action="" id="startup_form">
+                <input
+                    type="text"
+                    name="player_name_form"
+                    id="player_name_form"
+                    placeholder="Name"
+                />
+                <input type="submit" value="START" id="startup_button" />
+                <button id="reset_button">RESET</button>
+            </form>
+            <div id="log_div"><p id="feedback_log"></p></div>
+        </div>
+        <div id="main_container">
+            <div id="player_one_ships_div" class="ship_list">
+                <h4>Fleet</h4>
+                <div id="player_one_ships" class="ship_list"></div>
+                <p for="vertical_toggle">Horizontal/Vertical</p>
+                <label class="switch">
+                    <input type="checkbox" name="vertical_toggle" id="vertical_toggle" />
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div id="player_one">
+                <h4 id="p1_board_title"></h4>
+                <table id="player_one_board"></table>
+            </div>
+            <div id="player_two">
+                <h4 id="p2_board_title"></h4>
+                <table id="player_two_board"></table>
+            </div>
+        </div>
+    </body>
+    <footer>
+        <p>
+            Made by Carlos Moraes, 2021.
+            <a href="https://github.com/carloshrm/jsBattleshipGame">Source on Github.</a>
+        </p>
+    </footer>
+    <script src="main.js"></script>
 </html>
